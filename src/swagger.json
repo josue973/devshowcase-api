@@ -5,12 +5,16 @@
     "version": "1.0.0",
     "description": "Documentação da API DevShowcase com perfis, tecnologias, projetos, feedbacks, upvotes, filtros e paginação."
   },
-  "servers": [
-    {
-      "url": "http://localhost:3000",
-      "description": "Servidor Local de Desenvolvimento"
-    }
-  ],
+ "servers": [
+  {
+    "url": "https://devshowcase-api-1.onrender.com",
+    "description": "Servidor de Produção - Render"
+  },
+  {
+    "url": "http://localhost:3000",
+    "description": "Servidor Local de Desenvolvimento"
+  }
+],
   "paths": {
     "/api/profiles": {
       "post": {
