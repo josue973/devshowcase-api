@@ -4,8 +4,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/server.ts",
-  "scripts": {
-  "dev": "node --loader ts-node/esm src/server.ts"
+ "scripts": {
+  "dev": "node --loader ts-node/esm src/server.ts",
+  "build": "prisma generate && tsc",
+  "start": "node dist/server.js"
 },
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.0",
