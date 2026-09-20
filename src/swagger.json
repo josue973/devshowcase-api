@@ -1,0 +1,309 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "DevShowcase API Avançada",
+    "version": "1.0.0",
+    "description": "Documentação da API DevShowcase com perfis, tecnologias, projetos, feedbacks, upvotes, filtros e paginação."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Servidor Local de Desenvolvimento"
+    }
+  ],
+  "paths": {
+    "/api/profiles": {
+      "post": {
+        "summary": "Cadastrar um novo perfil",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "bio",
+                  "githubUrl",
+                  "linkedinUrl"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "bio": {
+                    "type": "string"
+                  },
+                  "githubUrl": {
+                    "type": "string"
+                  },
+                  "linkedinUrl": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Perfil criado com sucesso"
+          },
+          "400": {
+            "description": "Campos obrigatórios ausentes"
+          }
+        }
+      }
+    },
+
+    "/api/profiles/{id}": {
+      "get": {
+        "summary": "Buscar um perfil pelo ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Perfil encontrado"
+          },
+          "404": {
+            "description": "Perfil não encontrado"
+          }
+        }
+      }
+    },
+
+    "/api/technologies": {
+      "post": {
+        "summary": "Cadastrar uma nova tecnologia",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tecnologia cadastrada com sucesso"
+          },
+          "400": {
+            "description": "Nome inválido ou tecnologia já cadastrada"
+          }
+        }
+      },
+
+      "get": {
+        "summary": "Listar todas as tecnologias",
+        "responses": {
+          "200": {
+            "description": "Lista de tecnologias retornada com sucesso"
+          }
+        }
+      }
+    },
+
+    "/api/projects": {
+      "post": {
+        "summary": "Cadastrar um novo projeto",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "description",
+                  "repositoryUrl",
+                  "profileId",
+                  "technology"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "repositoryUrl": {
+                    "type": "string"
+                  },
+                  "profileId": {
+                    "type": "string"
+                  },
+                  "technology": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Projeto cadastrado com sucesso"
+          },
+          "400": {
+            "description": "Campos obrigatórios ausentes"
+          },
+          "404": {
+            "description": "Perfil ou tecnologia não encontrados"
+          }
+        }
+      },
+
+      "get": {
+        "summary": "Listar projetos com filtro por tecnologia e paginação",
+        "parameters": [
+          {
+            "name": "tech",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filtrar pela tecnologia, por exemplo Node.js"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Número da página"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Quantidade de projetos por página"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de projetos retornada com sucesso"
+          }
+        }
+      }
+    },
+
+    "/api/projects/{id}/upvote": {
+      "put": {
+        "summary": "Incrementar o número de upvotes de um projeto",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Upvote computado com sucesso"
+          },
+          "404": {
+            "description": "Projeto não encontrado"
+          }
+        }
+      }
+    },
+
+    "/api/projects/{id}/feedbacks": {
+      "post": {
+        "summary": "Adicionar feedback e atualizar a média do projeto",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "comment",
+                  "rating"
+                ],
+                "properties": {
+                  "comment": {
+                    "type": "string"
+                  },
+                  "rating": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Feedback adicionado e média atualizada"
+          },
+          "400": {
+            "description": "Comentário ou nota inválidos"
+          },
+          "404": {
+            "description": "Projeto não encontrado"
+          }
+        }
+      },
+
+      "get": {
+        "summary": "Listar todos os feedbacks de um projeto",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Feedbacks retornados com sucesso"
+          },
+          "404": {
+            "description": "Projeto não encontrado"
+          }
+        }
+      }
+    }
+  }
+}

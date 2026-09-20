@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Profile {
+  id          String    @id @default(uuid())
+  name        String
+  bio         String
+  githubUrl   String
+  linkedinUrl String
+  projects    Project[]
+}
+
+model Technology {
+  id   String @id @default(uuid())
+  name String @unique
+}
+
+model Project {
+  id            String     @id @default(uuid())
+  title         String
+  description   String
+  repositoryUrl String
+  technology    String
+  upvotes       Int        @default(0)
+  averageRating Float      @default(0.0)
+  profileId     String
+  feedbacks     Feedback[]
+  profile       Profile    @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+model Feedback {
+  id        String  @id @default(uuid())
+  comment   String
+  rating    Int
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
