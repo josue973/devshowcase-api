@@ -4,7 +4,7 @@ import swaggerDocument from './swagger.json' with { type: 'json' };
 import { prisma } from './prisma/db.js';
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 app.use(express.json());
 // Rota visual do Swagger para documentação
