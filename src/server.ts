@@ -371,6 +371,6 @@ app.use((req: Request, res: Response) => {
 });
 
 // Liga o servidor
-app.listen(PORT, () => {
-    console.log(`🚀 Servidor robusto rodando em http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Servidor rodando em 0.0.0.0:${PORT}`);
 });
